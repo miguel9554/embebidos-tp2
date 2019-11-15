@@ -76,9 +76,10 @@
 						#define __USE_TIME_EVENTS (true)
  	 	 	 	 	 	rm prefix.sct
  	 	 	 	 	 	cp Porton.-sct prefix.sct 							 		*/
+#define Generador (3)
 
 /* Select a compilation choise	*/
-#define TEST (SCT_1)
+#define TEST (Generador)
 
 
 #define TICKRATE_1MS	(1)				/* 1000 ticks per second */
@@ -144,6 +145,102 @@ void prefixIface_opLED(Prefix* handle, sc_integer LEDNumber, sc_boolean State)
 	gpioWrite( (LEDR + LEDNumber), State);
 }
 
+void prefixIface_aApagarLuz(Prefix* handle)
+{
+	gpioWrite( LED1, false);
+}
+
+void prefixIface_aEncenderLuz(Prefix* handle)
+{
+	gpioWrite( LED1, true);
+}
+
+void prefixIface_aEncenderHorno(Prefix* handle, sc_integer Mode)
+{
+	sc_integer i;
+
+	for (i = 0; i < Mode; i++)
+	{
+		gpioWrite( (LEDR+Mode-1), false);
+		delay(250);
+		gpioWrite( (LEDR+Mode-1), true);
+	}
+}
+
+void prefixIface_aSeleccionarModo(Prefix* handle, sc_integer LEDNumber)
+{
+	sc_boolean State = true;
+	/*RECORDAR MEJORAR ESTO*/
+	gpioWrite( (LEDR + 0), !State);
+	gpioWrite( (LEDR + 1), !State);
+	gpioWrite( (LEDR + 2), !State);
+
+	if(LEDNumber != 0)
+	{
+		gpioWrite( (LEDR + LEDNumber - 1), State);
+	}
+}
+
+void prefixIface_aClose(Prefix* handle, sc_boolean State)
+{
+	gpioWrite( LEDR, State);
+}
+
+void prefixIface_aOpen(Prefix* handle, sc_boolean State)
+{
+	gpioWrite( LEDR, State);
+}
+
+void prefixIface_aSetForma(Prefix* handle, sc_integer LEDNumber)
+{
+	sc_boolean State = true;
+	/*RECORDAR MEJORAR ESTO*/
+	gpioWrite( (LEDR + 0), !State);
+	gpioWrite( (LEDR + 1), !State);
+	gpioWrite( (LEDR + 2), !State);
+
+	gpioWrite( (LEDR + LEDNumber), State);
+}
+
+void prefixIface_aIncFrec(Prefix* handle, sc_boolean Type)
+{
+	sc_boolean State = true;
+	gpioWrite( LED1, Type);
+
+	gpioWrite( LED2, State);
+	delay(250);
+	gpioWrite( LED2, !State);
+}
+
+void prefixIface_aDecFrec(Prefix* handle, sc_boolean Type)
+{
+	sc_boolean State = true;
+	gpioWrite( LED1, Type);
+
+	gpioWrite( LED3, State);
+	delay(250);
+	gpioWrite( LED3, !State);
+}
+
+void prefixIface_aIncTens(Prefix* handle, sc_boolean Type)
+{
+	sc_boolean State = true;
+	gpioWrite( LED1, Type);
+
+	gpioWrite( LED2, State);
+	delay(250);
+	gpioWrite( LED2, !State);
+}
+
+void prefixIface_aDecTens(Prefix* handle, sc_boolean Type)
+{
+	sc_boolean State = true;
+	gpioWrite( LED1, Type);
+
+	gpioWrite( LED3, State);
+	delay(250);
+	gpioWrite( LED3, !State);
+}
 
 /*!
  * This is a timed state machine that requires timer services
